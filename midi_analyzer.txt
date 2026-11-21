@@ -1,0 +1,37 @@
+import mido
+
+midi_file = "output/test_basic_pitch.mid"
+
+print("=" * 50)
+print("       AI MUSICIAN - MIDI NOTE ANALYZER")
+print("=" * 50)
+
+mid = mido.MidiFile(midi_file)
+
+print(f"\nMIDI file: {midi_file}")
+print(f"Tracks: {len(mid.tracks)}")
+print(f"Ticks per beat: {mid.ticks_per_beat}")
+
+current_time = 0
+
+print("\nDetected MIDI events:")
+print("-" * 50)
+
+for track_number, track in enumerate(mid.tracks):
+    print(f"\nTRACK {track_number + 1}")
+    
+    current_time = 0
+
+    for message in track:
+        current_time += message.time
+
+        if message.type == "note_on" and message.velocity > 0:
+            print(
+                f"Time: {current_time:8.2f} | "
+                f"Note: {message.note:3d} | "
+                f"Velocity: {message.velocity:3d}"
+            )
+
+print("\n" + "=" * 50)
+print("Analysis complete!")
+print("=" * 50)
